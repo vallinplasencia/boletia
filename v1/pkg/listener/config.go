@@ -1,14 +1,15 @@
-package routers
+package listener
 
 import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-type Config struct{}
+type config struct {
+}
 
 // ConfigFromEnv ...
-func ConfigFromEnv(prefix string) (*Config, error) {
-	conf := Config{}
+func ConfigFromEnv(prefix string) (*config, error) {
+	conf := config{}
 	e := envconfig.Process(prefix, &conf)
 	return &conf, e
 }

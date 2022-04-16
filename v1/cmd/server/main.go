@@ -7,6 +7,7 @@ import (
 	"syscall"
 	"time"
 
+	aplistener "github.com/vallinplasencia/boletia/v1/pkg/listener"
 	apserver "github.com/vallinplasencia/boletia/v1/pkg/server"
 )
 
@@ -18,9 +19,14 @@ func main() {
 	s := apserver.New()
 	s.Run()
 
+	// listener up
+	l := aplistener.New()
+	l.Run()
+
 	<-quit
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	s.Shutdown(ctx)
+	l.Shutdown(ctx)
 }

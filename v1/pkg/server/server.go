@@ -28,7 +28,7 @@ type Server struct {
 }
 
 func New() *Server {
-	projectName := "Currencies"
+	projectName := "Boletia"
 
 	// server http-https
 	serverConf, e := ConfigFromEnv(projectName)
