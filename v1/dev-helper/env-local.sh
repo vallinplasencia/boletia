@@ -16,10 +16,12 @@ export BOLETIA_WRITE_TIMEOUT="17"
 # export BOLETIA_AUTHORIZATION_API_KEY="Asd*123." # api key authorization endpoints
 
 # db
-export BOLETIA_POSTGRE_DB_USER="boletia"
-export BOLETIA_POSTGRE_DB_PASSWORD="boletia"
-export BOLETIA_POSTGRE_DB_ADDRESS="localhost:123" # servidor con su puerto
-export BOLETIA_POSTGRE_DB_DBNAME="boletia"
+export BOLETIA_POSTGRES_DB_USER="boletia"
+export BOLETIA_POSTGRES_DB_PASSWORD="boletia"
+export BOLETIA_POSTGRES_DB_ADDRESS="localhost:5432" # servidor con su puerto
+export BOLETIA_POSTGRES_DB_DBNAME="boletia"
+
+export BOLETIA_DELAY_BETWEEN_CICLES="1" # cantidad de minutos q se demora en hacer otra llamada al la api
 
 # currencyapi client
 export BOLETIA_CURRENCY_API_URL_BASE="https://api.currencyapi.com/v3"

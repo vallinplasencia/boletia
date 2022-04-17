@@ -11,7 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	apdbclient "github.com/vallinplasencia/boletia/v1/pkg/external-services/db/postgre"
+	apdbclient "github.com/vallinplasencia/boletia/v1/pkg/external-services/db/postgres"
 	aphand "github.com/vallinplasencia/boletia/v1/pkg/handlers"
 	aprouter "github.com/vallinplasencia/boletia/v1/pkg/routers"
 )

@@ -1,4 +1,4 @@
-package mysql
+package postgres
 
 import (
 	"errors"
@@ -14,11 +14,11 @@ type config struct {
 // ConfigFromEnv ...
 func ConfigFromEnv(prefix string) (*config, error) {
 	temp := struct {
-		User     string `envconfig:"POSTGRE_DB_USER"`
-		Password string `envconfig:"POSTGRE_DB_PASSWORD"`
+		User     string `envconfig:"POSTGRES_DB_USER"`
+		Password string `envconfig:"POSTGRES_DB_PASSWORD"`
 		// Address incluye el puerto
-		Address string `envconfig:"POSTGRE_DB_ADDRESS"`
-		DBName  string `envconfig:"POSTGRE_DB_DBNAME"`
+		Address string `envconfig:"POSTGRES_DB_ADDRESS"`
+		DBName  string `envconfig:"POSTGRES_DB_DBNAME"`
 	}{}
 	e := envconfig.Process(prefix, &temp)
 	if len(temp.User) == 0 {
