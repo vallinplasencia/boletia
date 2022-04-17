@@ -2,7 +2,6 @@ package listener
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -10,6 +9,7 @@ import (
 	apdbclient "github.com/vallinplasencia/boletia/v1/pkg/external-services/db/postgres"
 	apexchangeabstract "github.com/vallinplasencia/boletia/v1/pkg/external-services/exchange/abstract"
 	apexchangeclient "github.com/vallinplasencia/boletia/v1/pkg/external-services/exchange/client"
+	apmodels "github.com/vallinplasencia/boletia/v1/pkg/models"
 )
 
 // Server ...
@@ -52,19 +52,49 @@ func New() *Listener {
 func (s *Listener) Run() {
 
 	go func() {
+		numCicle := 1
 		for {
-			d, code, e := s.exchanges.GetExchangesRates()
+			log.Printf("-------------------------------------Start cicle #: %d-------------------------------------", numCicle)
+
+			now := time.Now().UTC()
+			d, _, e := s.exchanges.GetExchangesRates()
+			duration := time.Now().UTC().Sub(now)
+			status := apmodels.StatusOK
 			if e != nil {
-				fmt.Println("error echange: ", e.Error())
+				log.Println("get echanges, error: ", e.Error())
+				status = apmodels.FailedOK
+			} else {
+				data := []*apmodels.Currency{}
+
+				for _, v := range d.Data {
+					data = append(data, &apmodels.Currency{
+						Code:         v.Code,
+						Value:        v.Value,
+						LastUpdateAt: d.LastUpdateAt,
+						CreatedAt:    now.Unix(),
+						UpdatedAt:    0,
+					})
+				}
+				e = s.db.Currencies().Add(data)
+				if e != nil {
+					log.Println("save many currencies, error: ", e.Error())
+				} else {
+					log.Printf("Save %d currencies", len(data))
+				}
 			}
-			fmt.Println("Code request to echange rates: ", code)
-			if d.Meta != nil {
-				fmt.Println("LastUpdate: ", d.Meta.LastUpdateAt)
+			e = s.db.Requests().Add(&apmodels.Request{
+				Date:      now,
+				Duration:  duration.String(),
+				Status:    status,
+				CreatedAt: now.Unix(),
+				UpdatedAt: 0,
+			})
+			if e != nil {
+				log.Println("save many currencies, error: ", e.Error())
 			}
-			for k, v := range d.Data {
-				fmt.Printf("%s: %+v", k, v)
-			}
-			<-time.After(time.Duration(s.delayBetweenCicles) * time.Second)
+			log.Printf("-------------------------------------End cicle #: %d. Wait %d minutes for a new cicle-------------------------------------", numCicle, s.delayBetweenCicles)
+			numCicle++
+			<-time.After(time.Duration(s.delayBetweenCicles) * time.Minute)
 		}
 	}()
 }
