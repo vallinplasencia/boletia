@@ -12,17 +12,14 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      # - ${BOLETIA_GITIGNORE}/postgres/data/:/var/lib/postgresql/data
       - ${BOLETIA_GITIGNORE}/postgres/:/docker-entrypoint-initdb.d
-      # - ./init/postgress/dump:/tmp/dump
-      # - ./init/postgress/script:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: boletia
       POSTGRES_PASSWORD: boletia
       POSTGRES_DB: boletia
     restart: always
   sboletia:
-    image: vallinplasencia/boletia:dev-xxx
+    image: vallinplasencia/boletia:dev-de82d3b9
     depends_on:
       - spostgres
     networks:

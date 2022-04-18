@@ -49,4 +49,4 @@ Los endpoints de la app pueden ser accedidos a traves de HTTP o HTTPS. Para gene
 
 ## BD
 
-- Salva de la bd con el esquema exchanges se encuentra en **v1/docker-compose/misc/postgres/init.sql**.
+- Script sql de la bd, se encuentra en **v1/docker-compose/misc/postgres/init.sql**.
