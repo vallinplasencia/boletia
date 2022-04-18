@@ -21,10 +21,10 @@ export BOLETIA_POSTGRES_DB_PASSWORD="boletia"
 export BOLETIA_POSTGRES_DB_ADDRESS="localhost:5432" # servidor con su puerto
 export BOLETIA_POSTGRES_DB_DBNAME="boletia"
 
-export BOLETIA_DELAY_BETWEEN_CICLES="1" # cantidad de minutos q se demora en hacer otra llamada al la api
-
 # currencyapi client
 export BOLETIA_CURRENCY_API_URL_BASE="https://api.currencyapi.com/v3"
 export BOLETIA_CURRENCY_API_KEY="rKNeGzWutRov1gT8KdrSIpoWrra7EOG0njtzoCav" 
 export BOLETIA_CURRENCY_REQUEST_TIMEOUT="17" # timeout expresado en segundos
 
+# cicles-intervals
+export BOLETIA_DELAY_BETWEEN_CICLES="1" # cantidad de minutos q se demora en hacer otra llamada al la api

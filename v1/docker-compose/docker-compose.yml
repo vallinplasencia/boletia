@@ -1,0 +1,63 @@
+version: "3.3"
+
+networks:
+  npostgres:
+  nboletia:
+
+services:
+  spostgres:
+    image: postgres:14.1
+    networks:
+      - npostgres
+    ports:
+      - "5432:5432"
+    volumes:
+      # - ${BOLETIA_GITIGNORE}/postgres/data/:/var/lib/postgresql/data
+      - ${BOLETIA_GITIGNORE}/postgres/:/docker-entrypoint-initdb.d
+      # - ./init/postgress/dump:/tmp/dump
+      # - ./init/postgress/script:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: boletia
+      POSTGRES_PASSWORD: boletia
+      POSTGRES_DB: boletia
+    restart: always
+  sboletia:
+    image: vallinplasencia/boletia:dev-xxx
+    depends_on:
+      - spostgres
+    networks:
+      - nboletia
+      - npostgres
+    ports:
+      - 8080:80
+      - 4443:443
+    volumes:
+      - ${BOLETIA_GITIGNORE}/certs:/certs
+    environment:
+      - GIN_MODE=debug
+      - BOLETIA_APP_MODE=develop
+      # file logs
+      # - BOLETIA_PATH_FILE_LOGS=../gitignore/logs/all.log
+
+      # http and https
+      - BOLETIA_ADDRESS_HTTP=:80
+      - BOLETIA_ADDRESS_HTTPS=:443
+      - BOLETIA_PATH_CERT_HTTPS=/certs/cert.pem
+      - BOLETIA_PATH_KEY_HTTPS=/certs/key.pem
+      - BOLETIA_READ_TIMEOUT=17
+      - BOLETIA_WRITE_TIMEOUT=17
+
+      # db
+      - BOLETIA_POSTGRES_DB_USER=boletia
+      - BOLETIA_POSTGRES_DB_PASSWORD=boletia
+      - BOLETIA_POSTGRES_DB_ADDRESS=spostgres:5432 # servidor con su puerto
+      - BOLETIA_POSTGRES_DB_DBNAME=boletia
+
+      # currencyapi client
+      - BOLETIA_CURRENCY_API_URL_BASE=https://api.currencyapi.com/v3
+      - BOLETIA_CURRENCY_API_KEY=rKNeGzWutRov1gT8KdrSIpoWrra7EOG0njtzoCav
+      - BOLETIA_CURRENCY_REQUEST_TIMEOUT=17 # timeout expresado en segundos
+
+      # cicles
+      - BOLETIA_DELAY_BETWEEN_CICLES=1
+  

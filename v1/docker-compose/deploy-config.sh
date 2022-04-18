@@ -1,0 +1,1 @@
+export BOLETIA_GITIGNORE=$PWD/../gitignore
