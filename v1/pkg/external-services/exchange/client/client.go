@@ -70,12 +70,36 @@ func (c *exchangeClient) GetExchangesRates() (*apechangeabstract.ExchangeRates, 
 		return nil, http.StatusInternalServerError, e
 	}
 	// RespAnalysis ...
-	bResp := apechangeabstract.ExchangeRates{}
+	bResp := exchangeRates{}
 
 	e = json.Unmarshal(respBody, &bResp)
 	if e != nil {
 		return nil, http.StatusInternalServerError, e
 	}
+	data := map[string]*apechangeabstract.Currency{}
+	for k, v := range bResp.Data {
+		data[k] = &apechangeabstract.Currency{
+			Code:  v.Code,
+			Value: v.Value,
+		}
+	}
+	date, e := time.Parse("2006-01-02T15:04:05Z", bResp.Meta.LastUpdateAt)
+	return &apechangeabstract.ExchangeRates{
+		LastUpdateAt: date.UTC().Unix(),
+		Data:         data,
+	}, code, e
+}
 
-	return &bResp, code, nil
+// exchangerates ...
+type exchangeRates struct {
+	Meta *struct {
+		LastUpdateAt string `json:"last_updated_at"`
+	} `json:"meta"`
+	Data map[string]*currency `json:"data"`
+}
+
+// currency ...
+type currency struct {
+	Code  string  `json:"code"`
+	Value float64 `json:"value"`
 }

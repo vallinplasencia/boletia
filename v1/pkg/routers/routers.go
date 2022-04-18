@@ -2,7 +2,9 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+
 	aphand "github.com/vallinplasencia/boletia/v1/pkg/handlers"
+	apmiddlewares "github.com/vallinplasencia/boletia/v1/pkg/middlewares"
 )
 
 // Router ...
@@ -26,9 +28,9 @@ func (r *Router) InitRouters() {
 
 // initV1Routers set endpoints with yours handlers
 func (r *Router) initV1Routers() {
-
+	r.eng.Use(apmiddlewares.Cors())
 	apiv1 := r.eng.Group("/api/v1")
 	{
-		apiv1.POST("/currencies", r.h.Currencies.GetListCurrencies)
+		apiv1.GET("/currencies/:currency", r.h.Currencies.GetListCurrencies)
 	}
 }

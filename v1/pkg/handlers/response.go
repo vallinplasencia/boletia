@@ -63,11 +63,6 @@ func (r *response) sendBadRequest(code aphresp.CodeType, e interface{}, headers 
 	r.send(http.StatusBadRequest, code, e, headers)
 }
 
-// sendNotFound ...
-func (r *response) sendNotFound(code aphresp.CodeType, e interface{}, headers map[string]string) {
-	r.send(http.StatusNotFound, code, e, headers)
-}
-
 // sendInternalError ...
 func (r *response) sendInternalError(code aphresp.CodeType, e interface{}, headers map[string]string) {
 	r.send(http.StatusInternalServerError, code, e, headers)

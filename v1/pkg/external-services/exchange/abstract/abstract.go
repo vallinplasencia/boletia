@@ -8,14 +8,13 @@ type Exchanges interface {
 
 // Exchangerates ...
 type ExchangeRates struct {
-	Meta *struct {
-		LastUpdateAt string `json:"last_updated_at"`
-	} `json:"meta"`
-	Data map[string]*Currency `json:"data"`
+	// LastUpdateAt fecha formato unix
+	LastUpdateAt int64
+	Data         map[string]*Currency
 }
 
 // Currency ...
 type Currency struct {
-	Code  string  `json:"code"`
-	Value float64 `json:"value"`
+	Code  string
+	Value float64
 }
